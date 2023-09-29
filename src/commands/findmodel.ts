@@ -18,7 +18,7 @@ module.exports = (bot: any, message: any, site: string, query: Array<string>) =>
       } else {
         // create embed
         let embed = {
-          title: res.length + ` result${res.length !== 1 ? "s" : ""} found`,
+          title: (res.length !== 10 ? res.length : "10 or more") + ` result${res.length !== 1 ? "s" : ""} found`,
           color: 0x00ff00,
           fields: [] as Array<object>
         }
