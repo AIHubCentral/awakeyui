@@ -2,9 +2,10 @@ const handleCommands = require('../../handlers/commands');
 
 module.exports = (bot: any, message: any) => {
     try {
+        bot.logger.debug({text: "messageCreate"});
+        bot.logger.debug({text: message.content});
         if (message.content.startsWith(`${process.env.PREFIX}`)) {
-            bot.logger.debug({text: "messageCreate"});
-            bot.logger.debug({text: message.content});
+            bot.logger.debug({text: "isCommand"});
 
             /*if (message.content == `${process.env.PREFIX}ping`) {
                 bot.logger.debug({text: "ping"});
