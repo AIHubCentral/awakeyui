@@ -1,5 +1,3 @@
-import * as Eris from "eris";
-
 const hfapi = require('./helpers/hfapi');
 
 function sendNotSupported(bot: any, message: any, site: string) {
