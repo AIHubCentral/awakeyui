@@ -1,7 +1,6 @@
 const helperCheckPermissions = require("../commands/helpers/checkPerms")
 
 const cmdPing = require("../commands/ping")
-const cmdSay = require("../commands/say")
 const cmdPpdf = require("../commands/ppdf")
 const cmdFind = require("../commands/findmodel")
 
