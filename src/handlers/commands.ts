@@ -44,11 +44,13 @@ module.exports = (bot: any, message: any) => {
           break;
         case "find":
 
+          const validSites = ["hf", "cv", "wgg"]
+
           const site = commandArgs[0]
           const query = commandArgs.slice(1)
           if (site == "help") {
             bot.createMessage(message.channel.id, {
-              content: `Usage: \`${process.env.PREFIX}find <site> <query*>\`\n\n\`<site>\` can be one of the following:\n- \`hf\` (huggingface)\n- \`cv\` (civitai)\n\n\`<query>\` is the search query. It can be anything, but it's best to use tags or model names.\nYou have access to the following **OPTIONAL** arguments:\n- \`-s <value>\` or \`--sort <value>\` sort by something, can be one of the following: downloads, author, name, created, updated, size\n- \`-a <value>\` or \`--author <value>\` has to be the exact name of the author\n- \`-f <value>\` or \`--filter <value>\` has to be one of the tags such as text-classification, text-generation or spacy`,
+              content: `Usage: \`${process.env.PREFIX}find <site> <query*>\`\n\n\`<site>\` can be one of the following:\n- \`cv\` (civitai)\n\n\`<query>\`\n- \`hf\` (huggingface)\n- \`wgg\` (weights.gg)\n\n\`<query>\` is the search query. It can be anything, but it's best to use tags or model names.\nYou have access to the following **OPTIONAL** arguments:\n- \`-s <value>\` or \`--sort <value>\` sort by something, can be one of the following: downloads, author, name, created, updated, size\n- \`-a <value>\` or \`--author <value>\` has to be the exact name of the author\n- \`-f <value>\` or \`--filter <value>\` has to be one of the tags such as text-classification, text-generation or spacy`,
               messageReference: {messageID: message.id}
             })
             return;
@@ -58,9 +60,9 @@ module.exports = (bot: any, message: any) => {
               messageReference: {messageID: message.id}
             })
             return;
-          } else if (site != "hf" && site != "cv") {
+          } else if (!validSites.includes(site)) {
             bot.createMessage(message.channel.id, {
-              content: `:x: Please provide a valid site;\nOptions are:\n- \`hf\` (huggingface)\n- \`cv\` (civitai)`,
+              content: `:x: Please provide a valid site;\nOptions are:\n- \`hf\` (huggingface)\n- \`cv\` (civitai)\n- \`wgg\` (weights.gg)`,
               messageReference: {messageID: message.id}
             })
             return;
