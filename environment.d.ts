@@ -13,6 +13,13 @@ declare global {
             PREFIX: string;
             BOT_OWNER: string;
 
+            // logging
+            LOGGING_LEVEL: 'debug' | 'info' | 'warn' | 'error' | 'off';
+
+            // @ts-ignore
+            // TS doesn't like numbers in env vars
+            LOGGING_MAX_FILES: number;
+
             // misc
             COMMAND_COOLDOWN: string;
         }
