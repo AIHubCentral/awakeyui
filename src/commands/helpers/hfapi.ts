@@ -11,6 +11,8 @@ function parseSearchQuery(query: Array<string>) {
     author: undefined as string | undefined,
     filter: undefined as string | undefined,
     query: undefined as Array<string> | undefined,
+    // temporary, remove when released
+    limit: undefined as number | undefined,
   };
 
   let tmpStr;
@@ -51,6 +53,17 @@ function parseSearchQuery(query: Array<string>) {
           // cut off the -f or --filter
           query.splice(i, 1);
         }
+      // temporary, remove when released
+      } else if (query[i] == "-l" || query[i] == "--limit") {
+        try {
+          tmpStr = query[i + 1];
+          // cut off the -l or --limit and the limit
+          query.splice(i, 2);
+          returnObject.limit = parseInt(tmpStr);
+        } catch (err) {
+          // cut off the -l or --limit
+          query.splice(i, 1);
+        }
       }
     }
   }
@@ -75,6 +88,9 @@ async function getModel(query: Array<string>) {
   let sort = psq.sort;
   let author = psq.author;
   let filter = psq.filter;
+
+  // temporary limit, should be 1 when released
+  let limit = psq.limit || 10;
 
   // check if query is empty
   if (query.length <= 0 || !pquery) {
@@ -107,7 +123,7 @@ async function getModel(query: Array<string>) {
   if (sort) {
     queryBuild += "&sort=" + sort;
   }
-  queryBuild += "&limit=10";
+  queryBuild += "&limit=" + limit;
 
   // request json from https://huggingface.co/api/models? + queryBuild
 
