@@ -22,6 +22,9 @@ declare global {
 
             // misc
             COMMAND_COOLDOWN: string;
+
+            // find command
+            FIND_LIMIT: string;
         }
     }
     function client(): void;
