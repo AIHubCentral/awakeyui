@@ -50,7 +50,7 @@ module.exports = (bot: any, message: any) => {
           const query = commandArgs.slice(1)
           if (site == "help") {
             bot.createMessage(message.channel.id, {
-              content: `Usage: \`${process.env.PREFIX}find <site> <query*>\`\n\n\`<site>\` can be one of the following:\n- \`cv\` (civitai)\n- \`hf\` (huggingface)\n- \`wgg\` (weights.gg)\n\n\`<query>\` is the search query. It can be anything, but it's best to use tags or model names.\nYou have access to the following **OPTIONAL** arguments:\n- \`-s <value>\` or \`--sort <value>\` sort by something, can be one of the following: downloads, author, name, created, updated, size\n- \`-a <value>\` or \`--author <value>\` has to be the exact name of the author\n- \`-f <value>\` or \`--filter <value>\` has to be one of the tags such as text-classification, text-generation or spacy`,
+              content: `Usage: \`${process.env.PREFIX}find <site> <query*>\`\n\n\`<site>\` can be one of the following:\n- \`cv\` (civitai)\n- \`hf\` (huggingface)\n- \`wgg\` (weights.gg)\n\n\`<query>\` is the search query. It can be anything, but it's best to use tags or model names.\nYou have access to the following **OPTIONAL** arguments:\n- \`-s <value>\` or \`--sort <value>\` sort by something, can be one of the following: downloads, author, name, created, updated, size, epochs, likes, rating, newest (some won't work on specific sites)\n- \`-a <value>\` or \`--author <value>\` has to be the exact name of the author\n- \`-f <value>\` or \`--filter <value>\` tags to search for, such as text-classification, RVCv2 or LoRa (depending on the site used)`,
               messageReference: {messageID: message.id}
             })
             return;
