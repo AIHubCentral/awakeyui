@@ -4,6 +4,8 @@ const cmdPing = require("../commands/ping")
 const cmdPpdf = require("../commands/ppdf")
 const cmdFind = require("../commands/findmodel")
 
+const findHelpMsg = `Usage: \`${process.env.PREFIX}find <site> <query*>\`\n\n\`<site>\` can be one of the following:\n- \`cv\` (civitai)\n- \`hf\` (huggingface)\n- \`wgg\` (weights.gg)\n\n\`<query>\` is the search query. It can be anything, but it's best to use tags or model names.\nYou have access to the following **OPTIONAL** arguments:\n- \`-s <value>\` or \`--sort <value>\` sort by something, can be one of the following: downloads, author, name, created, updated, size, epochs, likes, rating, newest (some won't work on specific sites)\n- \`-a <value>\` or \`--author <value>\` has to be the exact name of the author\n- \`-f <value>\` or \`--filter <value>\` tags to search for, such as text-classification, RVCv2 or LoRa (depending on the site used)`;
+
 
 module.exports = (bot: any, message: any) => {
   try {
@@ -50,7 +52,7 @@ module.exports = (bot: any, message: any) => {
           const query = commandArgs.slice(1)
           if (site == "help") {
             bot.createMessage(message.channel.id, {
-              content: `Usage: \`${process.env.PREFIX}find <site> <query*>\`\n\n\`<site>\` can be one of the following:\n- \`cv\` (civitai)\n- \`hf\` (huggingface)\n- \`wgg\` (weights.gg)\n\n\`<query>\` is the search query. It can be anything, but it's best to use tags or model names.\nYou have access to the following **OPTIONAL** arguments:\n- \`-s <value>\` or \`--sort <value>\` sort by something, can be one of the following: downloads, author, name, created, updated, size, epochs, likes, rating, newest (some won't work on specific sites)\n- \`-a <value>\` or \`--author <value>\` has to be the exact name of the author\n- \`-f <value>\` or \`--filter <value>\` tags to search for, such as text-classification, RVCv2 or LoRa (depending on the site used)`,
+              content: findHelpMsg,
               messageReference: {messageID: message.id}
             })
             return;
@@ -74,6 +76,35 @@ module.exports = (bot: any, message: any) => {
           cmdFind(bot, message, site, query)
 
           break;
+        case "help":
+
+          if (commandArgs.length <= 0) {
+            bot.createMessage(message.channel.id, {
+              content: `:x: Please provide a command name;\nUsage: \`${process.env.PREFIX}help <command>\`\nCommands are:\n- \`ping\`\n- \`ppdf\`\n- \`find\``,
+              messageReference: {messageID: message.id}
+            });
+            return;
+          }
+          switch (commandArgs[0]) {
+            case "find":
+              bot.createMessage(message.channel.id, {
+                content: findHelpMsg,
+                messageReference: {messageID: message.id}
+              })
+              break;
+            case "ping":
+              bot.createMessage(message.channel.id, {
+                content: `Usage: \`${process.env.PREFIX}ping\`\n\nPings the bot and shows the latency`,
+                messageReference: {messageID: message.id}
+              })
+              break;
+            case "ppdf":
+              bot.createMessage(message.channel.id, {
+                content: `Usage: \`${process.env.PREFIX}ppdf <url>\`\n\nTakes a screenshot of the page and sends it as a file.\nOptional args are:\n- \`-p\` or \`--pdf\` sends a pdf of the page besides the screenshot`,
+                messageReference: {messageID: message.id}
+              })
+              break;
+          }
       }
     }
   } catch (err) {
