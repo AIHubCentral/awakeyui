@@ -105,6 +105,7 @@ module.exports = (bot: any, message: any) => {
               })
               break;
           }
+          break;
       }
     }
   } catch (err) {
