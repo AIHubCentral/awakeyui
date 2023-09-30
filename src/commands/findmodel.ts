@@ -26,7 +26,24 @@ function couldNotSendEmbed(bot: any, message: any) {
     content: `:x: Embed could not be sent`,
     messageReference: {messageID: message.id}
   })
-  return;
+}
+
+function sendEmbed(bot: any, message: any, embed: any) {
+  try {
+    bot.logger.debug({text: embed});
+    bot.createMessage(message.channel.id, {
+      content: "",
+      embed: embed,
+      messageReference: {messageID: message.id}
+    })
+    return;
+  } catch (err) {
+    bot.logger.error({text: `[findmodelCmd] Error in findmodel:\n` + err});
+    // @ts-ignore
+    bot.logger.debug({text: err.stack});
+    couldNotSendEmbed(bot, message);
+    return;
+  }
 }
 
 module.exports = (bot: any, message: any, site: string, query: Array<string>) => {
@@ -54,21 +71,7 @@ module.exports = (bot: any, message: any, site: string, query: Array<string>) =>
             value: "- **Author:** " + model.id.split("/")[0] + "\n- **Downloads:** " + model.downloads + "\n- **Likes:** " + model.likes + "\n- **Tags:**\n```json\n" + JSON.stringify(model.tags) + "```\n- **Pipeline-Tag:** `" + model.pipeline_tag + "`\n- [**URL**](https://huggingface.co/" + model.id + "): https://huggingface.co/" + model.id
           })
         })
-        try {
-          bot.logger.debug({text: embed});
-          bot.createMessage(message.channel.id, {
-            content: "",
-            embed: embed,
-            messageReference: {messageID: message.id}
-          })
-          return;
-        } catch (err) {
-          bot.logger.error({text: `[findmodelCmd] Error in findmodel:\n` + err});
-          // @ts-ignore
-          bot.logger.debug({text: err.stack});
-          couldNotSendEmbed(bot, message);
-          return;
-        }
+        sendEmbed(bot, message, embed);
       }
     })
   } else if (site == "cv") {
@@ -90,21 +93,7 @@ module.exports = (bot: any, message: any, site: string, query: Array<string>) =>
             value: "- **Author:** " + model.creator.username + "\n- **Downloads:** " + model.stats.downloadCount + "\n- **Rating:** " + model.stats.rating + "\n- **Tags:**\n```json\n" + JSON.stringify(model.tags) + "```\n- **Type:** `" + model.type + "`\n- [**URL**](https://civitai.com/models/" + model.id + "): https://civitai.com/models/" + model.id
           })
         });
-        try {
-          bot.logger.debug({text: embed});
-          bot.createMessage(message.channel.id, {
-            content: "",
-            embed: embed,
-            messageReference: {messageID: message.id}
-          })
-          return;
-        } catch (err) {
-          bot.logger.error({text: `[findmodelCmd] Error in findmodel:\n` + err});
-          // @ts-ignore
-          bot.logger.debug({text: err.stack});
-          couldNotSendEmbed(bot, message);
-          return;
-        }
+        sendEmbed(bot, message, embed)
       } else {
         const model = res[0];
         // create embed
@@ -146,21 +135,7 @@ module.exports = (bot: any, message: any, site: string, query: Array<string>) =>
             },
           ]
         }
-        try {
-          bot.logger.debug({text: embed});
-          bot.createMessage(message.channel.id, {
-            content: "",
-            embed: embed,
-            messageReference: {messageID: message.id}
-          })
-          return;
-        } catch (err) {
-          bot.logger.error({text: `[findmodelCmd] Error in findmodel:\n` + err});
-          // @ts-ignore
-          bot.logger.debug({text: err.stack});
-          couldNotSendEmbed(bot, message);
-          return;
-        }
+        sendEmbed(bot, message, embed)
       }
     });
     return;
@@ -183,21 +158,7 @@ module.exports = (bot: any, message: any, site: string, query: Array<string>) =>
             value: "- **Author:** " + model.discordUser + " <@" + model.discordUserId + ">" + "\n- **Description:**\n```\n" + model.content + "```\n- **Likes:** " + model._count.Likes + "\n- **Tags:**\n```json\n" + JSON.stringify(model.tags) + "```\n- **Epochs:** " + model.epochs + "\n- **Created at:** <t:" + (Math.floor(Date.parse(model.createdAt).valueOf() / 1000)) + ":R>\n- [**Weights.gg**](https://www.weights.gg/models/" + model.id + "): https://www.weights.gg/models/" + model.id + "\n- [**Huggingface.co**](" + model.url + "): " + model.url
           })
         })
-        try {
-          bot.logger.debug({text: embed});
-          bot.createMessage(message.channel.id, {
-            content: "",
-            embed: embed,
-            messageReference: {messageID: message.id}
-          })
-          return;
-        } catch (err) {
-          bot.logger.error({text: `[findmodelCmd] Error in findmodel:\n` + err});
-          // @ts-ignore
-          bot.logger.debug({text: err.stack});
-          couldNotSendEmbed(bot, message);
-          return;
-        }
+        sendEmbed(bot, message, embed)
       } else {
         const model = res[0];
         // create embed
@@ -240,21 +201,7 @@ module.exports = (bot: any, message: any, site: string, query: Array<string>) =>
             }
           ]
         }
-        try {
-          bot.logger.debug({text: embed});
-          bot.createMessage(message.channel.id, {
-            content: "",
-            embed: embed,
-            messageReference: {messageID: message.id}
-          })
-          return;
-        } catch (err) {
-          bot.logger.error({text: `[findmodelCmd] Error in findmodel:\n` + err});
-          // @ts-ignore
-          bot.logger.debug({text: err.stack});
-          couldNotSendEmbed(bot, message);
-          return;
-        }
+        sendEmbed(bot, message, embed);
       }
     });
   }
