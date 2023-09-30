@@ -13,19 +13,16 @@ module.exports = (bot: any, message: any, url: string, pdf: boolean) => {
         // create new page
         bot.logger.debug({text: "[ppdfCmd] create new page"});
         const page = await bot.browser.newPage();
-        // go to webpage
-        bot.logger.debug({text: "[ppdfCmd] go to webpage"});
-        await page.goto(url, {waitUntil: 'networkidle0'});
         // set viewport to 1920x1080
         bot.logger.debug({text: "[ppdfCmd] set viewport to 1920x1080"});
         await page.setViewport({width: 1920, height: 1080});
+        // go to webpage
+        bot.logger.debug({text: "[ppdfCmd] go to webpage"});
+        await page.goto(url, {waitUntil: 'networkidle0'});
         // screenshot the page
         bot.logger.debug({text: "[ppdfCmd] screenshot the page"});
         await page.screenshot({path: 'ppdf/pageScreenshot.png'});
         if (pdf) {
-          // set viewport to pdf DIN A4 format
-          bot.logger.debug({text: "[ppdfCmd] set viewport to pdf DIN A4 format"});
-          await page.setViewport({width: 3508, height: 2480});
           // create pdf
           bot.logger.debug({text: "[ppdfCmd] create pdf"});
           await page.pdf({
