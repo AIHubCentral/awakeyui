@@ -10,12 +10,9 @@ module.exports = (bot: any, message: any, url: string, pdf: boolean) => {
       let pdfBuffer: Buffer;
       let pngBuffer: Buffer;
       try {
-        // create headless browser
-        bot.logger.debug({text: "[ppdfCmd] create headless browser"});
-        const browser = await puppeteer.launch({headless: "new"});
         // create new page
         bot.logger.debug({text: "[ppdfCmd] create new page"});
-        const page = await browser.newPage();
+        const page = await bot.browser.newPage();
         // go to webpage
         bot.logger.debug({text: "[ppdfCmd] go to webpage"});
         await page.goto(url, {waitUntil: 'networkidle0'});
@@ -47,9 +44,6 @@ module.exports = (bot: any, message: any, url: string, pdf: boolean) => {
             }*/
           });
         }
-        // close browser
-        bot.logger.debug({text: "[ppdfCmd] close browser"});
-        await browser.close();
 
         // create buffer from pageScreenshot.png
         pngBuffer = fs.readFileSync('ppdf/pageScreenshot.png');
@@ -57,23 +51,34 @@ module.exports = (bot: any, message: any, url: string, pdf: boolean) => {
           // create buffer from pagePDF.pdf
           pdfBuffer = fs.readFileSync('ppdf/pagePDF.pdf');
 
-          // send pageScreenshot.png to channel
-          bot.createMessage(message.channel.id, {
-              content: "🖥️",
-              messageReference: {messageID: message.id},
-            },
-            // send image and pdf as files
-            [
-              {
-                file: pngBuffer,
-                name: "pageScreenshot.png"
+          try {
+            // send pageScreenshot.png to channel
+            bot.createMessage(message.channel.id, {
+                content: "🖥️",
+                messageReference: {messageID: message.id},
               },
-              {
-                file: pdfBuffer,
-                name: "pagePDF.pdf"
-              }
-            ]
-          );
+              // send image and pdf as files
+              [
+                {
+                  file: pngBuffer,
+                  name: "pageScreenshot.png"
+                },
+                {
+                  file: pdfBuffer,
+                  name: "pagePDF.pdf"
+                }
+              ]
+            );
+          } catch (err) {
+            bot.logger.error({text: `[ppdfCmd] Error in ppdf:\n` + err});
+            // @ts-ignore
+            bot.logger.debug({text: err.stack});
+
+            bot.createMessage(message.channel.id, {
+              content: "Error in ppdf, files too big?",
+              messageReference: {messageID: message.id}
+            });
+          }
         } else {
           // send pageScreenshot.png to channel
           bot.createMessage(message.channel.id, {
