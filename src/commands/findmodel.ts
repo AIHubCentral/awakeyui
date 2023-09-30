@@ -45,11 +45,12 @@ module.exports = (bot: any, message: any, site: string, query: Array<string>) =>
         }
         res.forEach((model: any) => {
           embed.fields.push({
-            name: model.id.split("/")[1],
+            name: model.id.split("/")[1] ? model.id.split("/")[1] : model.id,
             value: "- **Author:** " + model.id.split("/")[0] + "\n- **Downloads:** " + model.downloads + "\n- **Likes:** " + model.likes + "\n- **Tags:**\n```json\n" + JSON.stringify(model.tags) + "```\n- **Pipeline-Tag:** `" + model.pipeline_tag + "`\n- [**URL**](https://huggingface.co/" + model.id + "): https://huggingface.co/" + model.id
           })
         })
         try {
+          bot.logger.debug({text: embed});
           bot.createMessage(message.channel.id, {
             content: "",
             embed: embed,

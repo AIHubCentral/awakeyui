@@ -15,54 +15,68 @@ function parseSearchQuery(query: Array<string>) {
     limit: undefined as number | undefined,
   };
 
-  let tmpStr;
-  for (let i = 0; i < query.length; i++) {
-    if (query[i].startsWith("-")) {
+  let tmpStr: string;
+  const qlength = parseInt(query.length.toString()); // pls don't kill me
+  for (let i = 0; i < qlength; i++) {
+    //console.log(query[i]);
+    if (query[i]?.startsWith("-")) {
       if (query[i] == "-s" || query[i] == "--sort") {
+        //console.log("sort");
+        //console.log(query[i + 1]);
         try {
           tmpStr = query[i + 1].toLowerCase();
           if (tmpStr == "downloads" || tmpStr == "author" || tmpStr == "name" || tmpStr == "created" || tmpStr == "updated" || tmpStr == "size") {
             // cut off the -s or --sort and the sort type
-            query.splice(i, 2);
+            query[i] = ""
+            query[i + 1] = ""
             returnObject.sort = tmpStr;
           } else {
             // cut off the -s or --sort
-            query.splice(i, 1);
+            query[i] = ""
           }
         } catch (err) {
           // cut off the -s or --sort
-          query.splice(i, 1);
+          query[i] = ""
         }
       } else if (query[i] == "-a" || query[i] == "--author") {
+        //console.log("author");
+        //console.log(query[i + 1]);
         try {
           tmpStr = query[i + 1];
           // cut off the -a or --author and the author name
-          query.splice(i, 2);
+          query[i] = ""
+          query[i + 1] = ""
           returnObject.author = tmpStr;
         } catch (err) {
           // cut off the -a or --author
-          query.splice(i, 1);
+          query[i] = ""
         }
       } else if (query[i] == "-f" || query[i] == "--filter") {
+        //console.log("filter");
+        //console.log(query[i + 1]);
         try {
           tmpStr = query[i + 1].toLowerCase();
           // cut off the -f or --filter and the filter type
-          query.splice(i, 2);
+          query[i] = ""
+          query[i + 1] = ""
           returnObject.filter = tmpStr;
         } catch (err) {
           // cut off the -f or --filter
-          query.splice(i, 1);
+          query[i] = ""
         }
-      // temporary, remove when released
+        // temporary, remove when released
       } else if (query[i] == "-l" || query[i] == "--limit") {
+        //console.log("limit");
+        //console.log(query[i + 1]);
         try {
           tmpStr = query[i + 1];
           // cut off the -l or --limit and the limit
-          query.splice(i, 2);
+          query[i] = ""
+          query[i + 1] = ""
           returnObject.limit = parseInt(tmpStr);
         } catch (err) {
           // cut off the -l or --limit
-          query.splice(i, 1);
+          query[i] = ""
         }
       }
     }
@@ -77,7 +91,7 @@ function parseSearchQuery(query: Array<string>) {
   // }
 
   returnObject.query = query;
-  console.log(returnObject);
+  //console.log(returnObject);
   return returnObject;
 
 }
@@ -96,6 +110,11 @@ async function getModel(query: Array<string>) {
   if (query.length <= 0 || !pquery) {
     return undefined;
   }
+
+  // remove every empty string from query
+  pquery = pquery.filter((el) => {
+    return el != "";
+  });
 
   // GET https://huggingface.co/api/models
   // Payload:
@@ -125,8 +144,9 @@ async function getModel(query: Array<string>) {
   }
   queryBuild += "&limit=" + limit;
 
-  // request json from https://huggingface.co/api/models? + queryBuild
+  queryBuild += "&direction=-1";
 
+  // request json from https://huggingface.co/api/models? + queryBuild
   try {
     const apiUrl = 'https://huggingface.co/api/models?' + queryBuild;
     const response = await axios.get(apiUrl);
@@ -134,13 +154,8 @@ async function getModel(query: Array<string>) {
     // Check if the request was successful (status code 200)
     if (response.status === 200) {
       // Parse the JSON response
-      const data = response.data;
-
-      // You can now work with the JSON data here
-      console.log(data);
-
       // Return the data or do other processing as needed
-      return data;
+      return response.data;
     } else {
       console.error('Request failed with status:', response.status);
       return undefined;
