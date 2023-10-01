@@ -29,7 +29,7 @@ bot.logger.startup({text: `Loaded presets!`});
 
 (async () => {
   bot.logger.startup({text: `Loading headless browser...`});
-  bot.browser = await puppeteer.launch({headless: "new"});
+  bot.browser = await puppeteer.launch({headless: "new", args: ["--no-sandbox", "--disable-setuid-sandbox"]});
   bot.logger.startup({text: `Loaded headless browser!`});
 })();
 
