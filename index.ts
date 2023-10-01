@@ -1,3 +1,3 @@
 require('dotenv').config();
 
-import './src/run.ts';
+require('./src/run.ts');
