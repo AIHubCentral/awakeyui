@@ -16,6 +16,7 @@ bot.fs = require("fs");
 
 bot.logger.startup({text: `Loading objects...`});
 
+bot.logger.startup({text: `Loading presets...`});
 // load every json from jsons/embeds into bot.presets.embeds
 bot.presets = {
   embeds: {}
@@ -23,6 +24,7 @@ bot.presets = {
 bot.fs.readdirSync("./jsons/embeds").forEach((file: string) => {
   bot.presets.embeds[file.split(".")[0]] = require(`../jsons/embeds/${file}`);
 });
+bot.logger.startup({text: `Loaded presets!`});
 
 (async () => {
   bot.logger.startup({text: `Loading headless browser...`});
@@ -46,6 +48,7 @@ bot.on("error", (err: any) => {
   bot.logger.error({text: err});
 });
 
+bot.logger.startup({text: `Loaded events!`});
 
 bot.logger.startup({text: `Connecting to Discord...`});
 bot.connect().then(() => {
