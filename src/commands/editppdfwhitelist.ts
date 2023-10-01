@@ -48,11 +48,11 @@ module.exports = (bot: any, message: any, commandArgs: Array<string>) => {
       // list is jsons/data/ppdfWhitelist.json
       const list = require("../../jsons/data/ppdfWhitelist.json")
       bot.createMessage(message.channel.id, {
-        content: `**ppdf whitelist:**\n\`\`\`json\n${JSON.stringify(list, null, 2)}\`\`\``,
-        allowedMentions: {
-          everyone: false,
-          roles: false,
-          users: false
+        content: "",
+        embed: {
+          title: "ppdf whitelist",
+          description: `\`\`\`json\n${JSON.stringify(list, null, 2)}\`\`\``,
+          color: 0x00ff00,
         },
         messageReference: {messageID: message.id}
       })
