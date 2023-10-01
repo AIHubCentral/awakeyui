@@ -1,6 +1,7 @@
 const helperCheckPermissions = require("../commands/helpers/checkPerms")
 const helperCheckModRole = require("../commands/helpers/checkModRole")
 const helperDeniedCommand = require("../commands/helpers/deniedCommand")
+const helperSendEmbed = require("../commands/helpers/sendEmbed")
 
 const cmdPing = require("../commands/ping")
 const cmdPpdf = require("../commands/ppdf")
@@ -52,11 +53,7 @@ module.exports = (bot: any, message: any) => {
           const site = commandArgs[0]
           const query = commandArgs.slice(1)
           if (site == "help") {
-            bot.createMessage(message.channel.id, {
-              content: "",
-              embed: bot.presets.embeds.findHelp,
-              messageReference: {messageID: message.id}
-            })
+            helperSendEmbed(bot, message, bot.presets.embeds.findHelp)
             return;
           } else if (!site || query.length <= 0) {
             bot.createMessage(message.channel.id, {
@@ -89,25 +86,13 @@ module.exports = (bot: any, message: any) => {
           }
           switch (commandArgs[0]) {
             case "find":
-              bot.createMessage(message.channel.id, {
-                content: "",
-                embed: bot.presets.embeds.findHelp,
-                messageReference: {messageID: message.id}
-              })
+              helperSendEmbed(bot, message, bot.presets.embeds.findHelp)
               break;
             case "ping":
-              bot.createMessage(message.channel.id, {
-                content: "",
-                embed: bot.presets.embeds.pingHelp,
-                messageReference: {messageID: message.id}
-              })
+              helperSendEmbed(bot, message, bot.presets.embeds.pingHelp)
               break;
             case "ppdf":
-              bot.createMessage(message.channel.id, {
-                content: "",
-                embed: bot.presets.embeds.ppdfHelp,
-                messageReference: {messageID: message.id}
-              })
+              helperSendEmbed(bot, message, bot.presets.embeds.ppdfHelp)
               break;
           }
           break;
@@ -122,17 +107,17 @@ module.exports = (bot: any, message: any) => {
                 cmdEditPpdfWhitelist(bot, message, commandArgs)
                 break;
               default:
-                bot.createMessage(message.channel.id, {
-                  content: "",
-                  embed: bot.presets.embeds.editSubcommand,
-                  messageReference: {messageID: message.id}
-                })
+                helperSendEmbed(bot, message, bot.presets.embeds.editSubcommand)
                 break;
             }
           } else {
             helperDeniedCommand(bot, message)
             return;
           }
+          break;
+        case "about":
+          helperSendEmbed(bot, message, bot.presets.embeds.about)
+          break;
       }
     }
   } catch (err) {
