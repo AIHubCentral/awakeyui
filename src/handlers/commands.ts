@@ -1,10 +1,11 @@
 const helperCheckPermissions = require("../commands/helpers/checkPerms")
+const helperCheckModRole = require("../commands/helpers/checkModRole")
+const helperDeniedCommand = require("../commands/helpers/deniedCommand")
 
 const cmdPing = require("../commands/ping")
 const cmdPpdf = require("../commands/ppdf")
 const cmdFind = require("../commands/findmodel")
-
-const findHelpMsg = `Usage: \`${process.env.PREFIX}find <site> <query*>\`\n\n\`<site>\` can be one of the following:\n- \`cv\` (civitai)\n- \`hf\` (huggingface)\n- \`wgg\` (weights.gg)\n\n\`<query>\` is the search query. It can be anything, but it's best to use tags or model names.\nYou have access to the following **OPTIONAL** arguments:\n- \`-s <value>\` or \`--sort <value>\` sort by something, can be one of the following: downloads, author, name, created, updated, size, epochs, likes, rating, newest (some won't work on specific sites)\n- \`-a <value>\` or \`--author <value>\` has to be the exact name of the author\n- \`-f <value>\` or \`--filter <value>\` tags to search for, such as text-classification, RVCv2 or LoRa (depending on the site used)`;
+const cmdEditPpdfWhitelist = require("../commands/editppdfwhitelist")
 
 
 module.exports = (bot: any, message: any) => {
@@ -52,7 +53,8 @@ module.exports = (bot: any, message: any) => {
           const query = commandArgs.slice(1)
           if (site == "help") {
             bot.createMessage(message.channel.id, {
-              content: findHelpMsg,
+              content: "",
+              embed: bot.presets.embeds.findHelp,
               messageReference: {messageID: message.id}
             })
             return;
@@ -88,24 +90,49 @@ module.exports = (bot: any, message: any) => {
           switch (commandArgs[0]) {
             case "find":
               bot.createMessage(message.channel.id, {
-                content: findHelpMsg,
+                content: "",
+                embed: bot.presets.embeds.findHelp,
                 messageReference: {messageID: message.id}
               })
               break;
             case "ping":
               bot.createMessage(message.channel.id, {
-                content: `Usage: \`${process.env.PREFIX}ping\`\n\nPings the bot and shows the latency`,
+                content: "",
+                embed: bot.presets.embeds.pingHelp,
                 messageReference: {messageID: message.id}
               })
               break;
             case "ppdf":
               bot.createMessage(message.channel.id, {
-                content: `Usage: \`${process.env.PREFIX}ppdf <url>\`\n\nTakes a screenshot of the page and sends it as a file.\nOptional args are:\n- \`-p\` or \`--pdf\` sends a pdf of the page besides the screenshot`,
+                content: "",
+                embed: bot.presets.embeds.ppdfHelp,
                 messageReference: {messageID: message.id}
               })
               break;
           }
           break;
+        case "edit":
+          if (helperCheckModRole(bot, message)) {
+            switch (commandArgs[0]) {
+              case "msg":
+                break;
+              case "embed":
+                break;
+              case "ppdf":
+                cmdEditPpdfWhitelist(bot, message, commandArgs)
+                break;
+              default:
+                bot.createMessage(message.channel.id, {
+                  content: "",
+                  embed: bot.presets.embeds.editSubcommand,
+                  messageReference: {messageID: message.id}
+                })
+                break;
+            }
+          } else {
+            helperDeniedCommand(bot, message)
+            return;
+          }
       }
     }
   } catch (err) {

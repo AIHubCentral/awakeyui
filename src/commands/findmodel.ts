@@ -1,57 +1,35 @@
 const hfapi = require('./helpers/hfapi');
 const wggapi = require('./helpers/wggapi');
 const cvapi = require('./helpers/cvapi');
+const couldNotSendEmbed = require('./helpers/noEmbed');
+const sendEmbed = require('./helpers/sendEmbed');
 
 const TurndownService = require('turndown');
 const turndownService = new TurndownService()
 
 function sendNotSupported(bot: any, message: any, site: string) {
   bot.createMessage(message.channel.id, {
-    content: `:x: ${site} is not yet supported`,
+    content: "",
+    embed: bot.presets.embeds.findSiteNotSupported,
     messageReference: {messageID: message.id}
   })
-  return;
 }
 
 function sendNoResults(bot: any, message: any) {
   bot.createMessage(message.channel.id, {
-    content: `:x: No results found`,
-    messageReference: {messageID: message.id}
-  })
-  return;
-}
-
-function couldNotSendEmbed(bot: any, message: any) {
-  bot.createMessage(message.channel.id, {
-    content: `:x: Embed could not be sent`,
+    content: "",
+    embed: bot.presets.embeds.findNoResultsFound,
     messageReference: {messageID: message.id}
   })
 }
 
-function sendEmbed(bot: any, message: any, embed: any) {
-  try {
-    bot.logger.debug({text: embed});
-    bot.createMessage(message.channel.id, {
-      content: "",
-      embed: embed,
-      messageReference: {messageID: message.id}
-    })
-    return;
-  } catch (err) {
-    bot.logger.error({text: `[findmodelCmd] Error in findmodel:\n` + err});
-    // @ts-ignore
-    bot.logger.debug({text: err.stack});
-    couldNotSendEmbed(bot, message);
-    return;
-  }
-}
 
 module.exports = (bot: any, message: any, site: string, query: Array<string>) => {
   bot.logger.debug({text: "[pingCmd] findmodel"});
 
   bot.logger.debug({text: site});
   bot.logger.debug({text: query});
-
+  try {
   if (site == "hf") {
     hfapi.getModel(query).then((res: any) => {
       bot.logger.debug({text: res});
@@ -204,5 +182,12 @@ module.exports = (bot: any, message: any, site: string, query: Array<string>) =>
         sendEmbed(bot, message, embed);
       }
     });
+  }
+  } catch (err) {
+    bot.logger.error({text: `[findmodelCmd] Error in findmodel:\n` + err});
+    // @ts-ignore
+    bot.logger.debug({text: err.stack});
+    couldNotSendEmbed(bot, message);
+    return;
   }
 }

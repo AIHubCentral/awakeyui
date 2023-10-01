@@ -1,0 +1,5 @@
+{
+  "title": "Usage of the ping command",
+  "description": "Usage: `~ping`\n\nPings the bot and shows the latency",
+  "color": 16776960
+}

@@ -1,0 +1,5 @@
+{
+  "title": "Not On Whitelist",
+  "description": ":x: Please provide valid args;\nUsage: `~edit ppdf <add|remove|list> <url>`",
+  "color": 16711680
+}

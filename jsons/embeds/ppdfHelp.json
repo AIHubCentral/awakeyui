@@ -1,0 +1,5 @@
+{
+  "title": "Usage of the ppdf command",
+  "description": "Usage: `~ppdf <url>`\n\nTakes a screenshot of the page and sends it as a file.\nOptional args are:\n- `-p` or `--pdf` sends a pdf of the page besides the screenshot",
+  "color": 16776960
+}

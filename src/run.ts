@@ -12,7 +12,17 @@ const bot = new Eris(`Bot ${process.env.TOKEN}`, {
 
 
 bot.logger = require("./handlers/logger");
+bot.fs = require("fs");
+
 bot.logger.startup({text: `Loading objects...`});
+
+// load every json from jsons/embeds into bot.presets.embeds
+bot.presets = {
+  embeds: {}
+}
+bot.fs.readdirSync("./jsons/embeds").forEach((file: string) => {
+  bot.presets.embeds[file.split(".")[0]] = require(`../jsons/embeds/${file}`);
+});
 
 (async () => {
   bot.logger.startup({text: `Loading headless browser...`});
