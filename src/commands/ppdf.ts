@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const helperCheckModRole = require("./helpers/checkmodrole");
+const helperCheckModRole = require("./helpers/checkModRole");
 const sendEmbed = require("./helpers/sendEmbed");
 
 function checkForWhitelist(url: string) {
