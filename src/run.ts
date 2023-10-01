@@ -7,7 +7,8 @@ const bot = new Eris(`Bot ${process.env.TOKEN}`, {
     "guildMessages",
     "guilds",
     "guildMembers",
-  ]
+  ],
+  restMode: true,
 });
 
 
