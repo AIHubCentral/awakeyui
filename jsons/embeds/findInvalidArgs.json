@@ -1,0 +1,5 @@
+{
+  "title": "Invalid Args",
+  "description": "Please provide valid args;\nUsage: `~find <site> <query*>`\n\nType `~find help` for more info",
+  "color": 16711680
+}

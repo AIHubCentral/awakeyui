@@ -1,0 +1,5 @@
+{
+  "title": "Invalid Site",
+  "description": "Please provide a valid site;\n\nOptions are:\n- `hf` (huggingface)\n- `cv` (civitai)\n- `wgg` (weights.gg)",
+  "color": 16711680
+}

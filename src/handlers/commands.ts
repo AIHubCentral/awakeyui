@@ -38,10 +38,7 @@ module.exports = (bot: any, message: any) => {
 
           // check if url is valid
           if (!url || (!url.startsWith("http://") && !url.startsWith("https://")) || !url.includes(".") || url.includes(" ")) {
-            bot.createMessage(message.channel.id, {
-              content: `:x: Please provide a valid URL`,
-              messageReference: {messageID: message.id}
-            })
+            helperSendEmbed(bot, message, bot.presets.embeds.ppdfInvalidUrl)
             return;
           }
           cmdPpdf(bot, message, url, pdf)
@@ -56,16 +53,10 @@ module.exports = (bot: any, message: any) => {
             helperSendEmbed(bot, message, bot.presets.embeds.findHelp)
             return;
           } else if (!site || query.length <= 0) {
-            bot.createMessage(message.channel.id, {
-              content: `:x: Please provide valid args;\nUsage: \`${process.env.PREFIX}find <site> <query*>\`\nType \`${process.env.PREFIX}find help\` for more info`,
-              messageReference: {messageID: message.id}
-            })
+            helperSendEmbed(bot, message, bot.presets.embeds.findInvalidArgs)
             return;
           } else if (!validSites.includes(site)) {
-            bot.createMessage(message.channel.id, {
-              content: `:x: Please provide a valid site;\nOptions are:\n- \`hf\` (huggingface)\n- \`cv\` (civitai)\n- \`wgg\` (weights.gg)`,
-              messageReference: {messageID: message.id}
-            })
+            helperSendEmbed(bot, message, bot.presets.embeds.findSiteInvalidSite)
             return;
           } else {
             bot.logger.debug({text: site});
@@ -78,10 +69,7 @@ module.exports = (bot: any, message: any) => {
         case "help":
 
           if (commandArgs.length <= 0) {
-            bot.createMessage(message.channel.id, {
-              content: `:x: Please provide a command name;\nUsage: \`${process.env.PREFIX}help <command>\`\nCommands are:\n- \`ping\`\n- \`ppdf\`\n- \`find\``,
-              messageReference: {messageID: message.id}
-            });
+            helperSendEmbed(bot, message, bot.presets.embeds.helpHelp)
             return;
           }
           switch (commandArgs[0]) {

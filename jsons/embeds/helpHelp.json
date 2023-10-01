@@ -1,0 +1,5 @@
+{
+  "title": "Provide Command Name",
+  "description": "Usage: `~help <command>`\n\nCommands are:\n- `ping`\n- `ppdf`\n- `find`",
+  "color": 16776960
+}
