@@ -1,0 +1,25 @@
+{
+  "id": "1158501386867196005",
+  "createdAt": 1696278654544,
+  "type": 11,
+  "name": "gawr gura",
+  "parentID": "1158465634405986315",
+  "lastMessageID": "1158501386867196005",
+  "memberCount": 2,
+  "messageCount": 0,
+  "messages": {},
+  "ownerID": "443769343138856961",
+  "rateLimitPerUser": 0,
+  "threadMetadata": {
+    "archiveTimestamp": 1696278654544,
+    "archived": false,
+    "autoArchiveDuration": 4320,
+    "locked": false
+  },
+  "member": {
+    "id": "962820399828193290",
+    "createdAt": 1649624671657,
+    "threadID": "1158501386867196005",
+    "joinTimestamp": 1696278655229
+  }
+}

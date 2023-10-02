@@ -1,9 +1,9 @@
-const noEmbed = require('./noEmbed');
+const noEmbed = require('./noEmbedEphemeral');
 
-module.exports = (bot: any, message: any, embed: any) => {
+module.exports = async (bot: any, message: any, embed: any) => {
   try {
     bot.logger.debug({text: embed});
-    bot.createMessage(message.channel.id, {
+    await bot.createMessage(message.channel.id, {
       content: "",
       embed: embed,
       messageReference: {messageID: message.id},
@@ -14,7 +14,7 @@ module.exports = (bot: any, message: any, embed: any) => {
     bot.logger.error({text: `Could not send embed:\n` + err});
     // @ts-ignore
     bot.logger.debug({text: err.stack});
-    noEmbed(bot, message);
+    await noEmbed(bot, message);
     return;
   }
 }

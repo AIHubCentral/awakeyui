@@ -1,7 +1,7 @@
 const axios = require('axios');
 const parseSearchQuery = require('./parseSearchQuery');
 
-async function getModel(query: Array<string>) {
+async function getModel(bot: any, query: Array<string>, overrideLimit?: number) {
   const psq = parseSearchQuery(query);
   let pquery = psq.query;
   let sort = psq.sort;
@@ -9,7 +9,12 @@ async function getModel(query: Array<string>) {
   let filter = psq.filter;
 
   // temporary limit, should be 1 when released
-  let limit = psq.limit || 10;
+  let limit;
+  if (!overrideLimit) {
+    limit = psq.limit || 10;
+  } else {
+    limit = overrideLimit;
+  }
 
   // check if query is empty
   if (query.length <= 0 || !pquery) {
@@ -20,6 +25,10 @@ async function getModel(query: Array<string>) {
   pquery = pquery.filter((el: string) => {
     return el != "";
   });
+
+  if (sort) {
+    sort = sort.charAt(0).toUpperCase() + sort.slice(1);
+  }
 
   const qjson = {
     "json": {
@@ -53,14 +62,22 @@ async function getModel(query: Array<string>) {
         }
       }
 
+      /*for (const model of resp) {
+        model.discordUserAvatar = await bot.getRESTUser(model?.content?.discordUserId).then((user: any) => {
+          return user.avatarURL;
+        }).catch((err: any) => {
+          return undefined;
+        });
+      }*/
+
       return resp;
     } else {
-      console.error('Request failed with status:', response.status);
+      bot.logger.error({text: `Request failed with status: ${response.status}`});
       return undefined;
     }
 
   } catch (error) {
-    console.error('Error:', error);
+    bot.logger.error({text: error});
     return undefined;
   }
 }

@@ -31,9 +31,9 @@ module.exports = (bot: any, message: any, site: string, query: Array<string>) =>
   bot.logger.debug({text: query});
   try {
     if (site == "hf") {
-      hfapi.getModel(query).then((res: any) => {
+      hfapi.getModel(bot, query).then((res: any) => {
         bot.logger.debug({text: res});
-        if (res == undefined) {
+        if (res == undefined || res.length == 0) {
           sendNoResults(bot, message);
           return;
         } else {
@@ -55,7 +55,7 @@ module.exports = (bot: any, message: any, site: string, query: Array<string>) =>
     } else if (site == "cv") {
       cvapi.getModel(bot, query).then((res: any) => {
         bot.logger.debug({text: res});
-        if (res == undefined) {
+        if (res == undefined || res.length == 0) {
           sendNoResults(bot, message);
           return;
         } else if (res.length > 1) {
@@ -118,9 +118,9 @@ module.exports = (bot: any, message: any, site: string, query: Array<string>) =>
       });
       return;
     } else if (site == "wgg") {
-      wggapi.getModel(query).then((res: any) => {
+      wggapi.getModel(bot, query).then((res: any) => {
         bot.logger.debug({text: res});
-        if (res == undefined) {
+        if (res == undefined || res.length == 0) {
           sendNoResults(bot, message);
           return;
         } else if (res.length > 1) {
@@ -145,8 +145,8 @@ module.exports = (bot: any, message: any, site: string, query: Array<string>) =>
             description: model.content || "unknown",
             color: 0x00ff00,
             author: {
-              name: model.discordUser || "unknown",
-              icon_url: model.discordUserAvatar || "unknown",
+              name: model.discordUser,
+              icon_url: model.discordUserAvatar,
             },
             fields: [
               {

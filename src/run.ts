@@ -25,9 +25,13 @@ bot.cfx = {
   allowMultipleTranscriptions: process.env.TRANSCRIPTION_ALLOW_MULTIPLE === "true",
   modRole: process.env.MOD_ROLE,
   commandCooldown: parseInt(`${process.env.COMMAND_COOLDOWN}`),
+  requestModelChannel: process.env.REQUEST_MODEL_CHANNEL,
 }
 
 bot.logger.startup({text: `Loading objects...`});
+bot.lists = {
+  createdRequestThreads: []
+}
 
 bot.logger.startup({text: `Loading presets...`});
 // load every json from jsons/embeds into bot.presets.embeds
@@ -62,7 +66,24 @@ bot.on("messageCreate", async (message: any) => {
   await messageCreate(bot, message)
 });
 
+const threadCreate = require("./events/guild/threadCreate");
+bot.on("threadCreate", async (thread: any) => {
+  await threadCreate(bot, thread)
+});
+
 bot.on("error", (err: any) => {
+  bot.logger.error({text: err});
+});
+
+process.on("unhandledRejection", (err: any) => {
+  bot.logger.error({text: err});
+});
+
+process.on("uncaughtException", (err: any) => {
+  bot.logger.error({text: err});
+});
+
+process.on("warning", (err: any) => {
   bot.logger.error({text: err});
 });
 

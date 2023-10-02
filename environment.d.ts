@@ -31,6 +31,9 @@ declare global {
 
             // transcription
             TRANSCRIPTION_ALLOW_MULTIPLE: 'true' | 'false';
+
+            // request a model
+            REQUEST_MODEL_CHANNEL: string;
         }
     }
     function client(): void;

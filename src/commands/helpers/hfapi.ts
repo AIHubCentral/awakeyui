@@ -1,7 +1,7 @@
 const axios = require('axios');
 const parseSearchQuery = require('./parseSearchQuery');
 
-async function getModel(query: Array<string>) {
+async function getModel(bot: any, query: Array<string>) {
   const psq = parseSearchQuery(query);
   let pquery = psq.query;
   let sort = psq.sort;
@@ -62,11 +62,11 @@ async function getModel(query: Array<string>) {
       // Return the data or do other processing as needed
       return response.data;
     } else {
-      console.error('Request failed with status:', response.status);
+      bot.logger.error({text: `Request failed with status: ${response.status}`});
       return undefined;
     }
   } catch (error) {
-    console.error('Error:', error);
+    bot.logger.error({text: error});
     return undefined;
   }
 }
