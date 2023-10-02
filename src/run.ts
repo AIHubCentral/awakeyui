@@ -1,4 +1,5 @@
 import puppeteer from "puppeteer";
+import OpenAI from "openai";
 
 const Eris = require("eris");
 
@@ -14,6 +15,12 @@ const bot = new Eris(`Bot ${process.env.TOKEN}`, {
 
 bot.logger = require("./handlers/logger");
 bot.fs = require("fs");
+bot.openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY,
+});
+bot.axios = require("axios").default;
+bot.bannedWords = require("./bannedWords").bannedwords;
+bot.path = require('path');
 
 bot.logger.startup({text: `Loading objects...`});
 
@@ -38,6 +45,11 @@ bot.logger.startup({text: `Loading events...`});
 const onReady = require("./events/bot/ready");
 bot.on("ready", () => {
   onReady(bot)
+});
+
+const interactionCreate = require("./events/guild/interactionCreate");
+bot.on("interactionCreate", (message: any) => {
+  interactionCreate(bot, message)
 });
 
 const messageCreate = require("./events/guild/messageCreate");
