@@ -53,7 +53,7 @@ module.exports = (bot: any, message: any, site: string, query: Array<string>) =>
         }
       })
     } else if (site == "cv") {
-      cvapi.getModel(query).then((res: any) => {
+      cvapi.getModel(bot, query).then((res: any) => {
         bot.logger.debug({text: res});
         if (res == undefined) {
           sendNoResults(bot, message);

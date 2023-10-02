@@ -1,7 +1,7 @@
 const axios = require('axios');
 const parseSearchQuery = require('./parseSearchQuery');
 
-async function getModel(query: Array<string>) {
+async function getModel(bot: any, query: Array<string>) {
   const psq = parseSearchQuery(query);
   let pquery = psq.query;
   let sort = psq.sort;
@@ -44,35 +44,38 @@ async function getModel(query: Array<string>) {
 
   try {
     const apiUrl = 'https://civitai.com/api/v1/models?' + queryBuild;
-    console.log(apiUrl);
+    //console.log(apiUrl);
     const response = await axios.get(apiUrl);
 
     // Check if the request was successful (status code 200)
     if (response.status === 200) {
       //console.log(response?.data);
       const resp = response?.data?.items;
-      const image = await getImage(resp[0].id);
+      const image = await getImage(bot, resp[0].id);
       resp[0].image = image;
       return resp
     } else {
-      console.error('Request failed with status:', response.status);
+      //console.error('Request failed with status:', response.status);
+      bot.logger.error({text: `Request failed with status: ${response.status}`});
       return undefined;
     }
 
   } catch (error) {
-    console.error('Error:', error);
+    //console.error('Error:', error);
+    bot.logger.error({text: error});
     return undefined;
   }
 }
 
-async function getImage(id: string) {
+async function getImage(bot: any, id: string) {
   try {
     const apiUrl = 'https://civitai.com/api/v1/models/' + id
     const response = await axios.get(apiUrl);
 
     return response?.data?.modelVersions[0]?.images[0]?.url;
   } catch (error) {
-    console.error('Error:', error);
+    //console.error('Error:', error);
+    bot.logger.error({text: error});
     return undefined;
   }
 }
