@@ -19,8 +19,13 @@ bot.openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 bot.axios = require("axios").default;
-bot.bannedWords = require("./bannedWords").bannedwords;
+bot.bannedWords = require("./essentials/bannedWords").bannedwords;
 bot.path = require('path');
+bot.cfx = {
+  allowMultipleTranscriptions: process.env.TRANSCRIPTION_ALLOW_MULTIPLE === "true",
+  modRole: process.env.MOD_ROLE,
+  commandCooldown: parseInt(`${process.env.COMMAND_COOLDOWN}`),
+}
 
 bot.logger.startup({text: `Loading objects...`});
 
@@ -48,13 +53,13 @@ bot.on("ready", () => {
 });
 
 const interactionCreate = require("./events/guild/interactionCreate");
-bot.on("interactionCreate", (message: any) => {
-  interactionCreate(bot, message)
+bot.on("interactionCreate", async (message: any) => {
+  await interactionCreate(bot, message)
 });
 
 const messageCreate = require("./events/guild/messageCreate");
-bot.on("messageCreate", (message: any) => {
-  messageCreate(bot, message)
+bot.on("messageCreate", async (message: any) => {
+  await messageCreate(bot, message)
 });
 
 bot.on("error", (err: any) => {

@@ -1,6 +1,6 @@
 const handleCommands = require('../../handlers/commands');
 
-module.exports = (bot: any, message: any) => {
+module.exports = async (bot: any, message: any) => {
     try {
         bot.logger.debug({text: "messageCreate"});
         bot.logger.debug({text: message.content});

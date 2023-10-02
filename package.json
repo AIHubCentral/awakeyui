@@ -23,6 +23,7 @@
   },
   "scripts": {
     "start": "ts-node index.ts",
+    "register": "ts-node register.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   }
 }

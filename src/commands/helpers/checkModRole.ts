@@ -7,6 +7,6 @@ module.exports = (bot: any, message: any) => {
     // check if user has process.env.MOD_ROLE
     bot.logger.debug({text: "mod role?"});
     bot.logger.debug({text: bot.guilds.get(message.guildID).members.get(message.author.id).roles});
-    return !!bot.guilds.get(message.guildID).members.get(message.author.id).roles.includes(process.env.MOD_ROLE);
+    return !!bot.guilds.get(message.guildID).members.get(message.author.id).roles.includes(bot.cfx.modRole);
   }
 }

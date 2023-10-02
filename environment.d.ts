@@ -13,18 +13,24 @@ declare global {
             PREFIX: string;
             BOT_OWNER: string;
 
+            // openai
+            OPENAI_API_KEY: string;
+
             // logging
             LOGGING_LEVEL: 'debug' | 'info' | 'warn' | 'error' | 'off';
-
-            // @ts-ignore
-            // TS doesn't like numbers in env vars
-            LOGGING_MAX_FILES: number;
+            LOGGING_MAX_FILES: string;
 
             // misc
             COMMAND_COOLDOWN: string;
 
+            // mod stuff
+            MOD_ROLE: string;
+
             // find command
             FIND_LIMIT: string;
+
+            // transcription
+            TRANSCRIPTION_ALLOW_MULTIPLE: 'true' | 'false';
         }
     }
     function client(): void;

@@ -1,6 +1,6 @@
-
-
-const allowMultipleTranscriptions = false;
+const sendEmbed = require("./helpers/sendInteractionEmbed");
+const sendEmbeds = require("./helpers/sendInteractionEmbeds");
+const sendEmbedEphemeral = require("./helpers/sendInteractionEmbedEphemeral");
 
 async function getAudioStream(bot: any, url: string) {
   try {
@@ -46,7 +46,6 @@ async function transcribeAudioFile(bot: any, interaction: any) {
     // check if interaction has any files
     if (message.attachments.length > 0) {
       bot.logger.debug("Interaction has files!");
-      await interaction.acknowledge();
       // check if any of the files is an audio file
       const audioFiles = message.attachments.filter((attachment: any) => {
         //console.log(attachment);
@@ -54,20 +53,11 @@ async function transcribeAudioFile(bot: any, interaction: any) {
       });
       if (audioFiles.length > 0) {
         bot.logger.debug("Interaction has audio files!");
+        await interaction.acknowledge();
         let audioIndex = 0;
         for (const audioFile of audioFiles) {
-          if (audioIndex > 0 && !allowMultipleTranscriptions) {
-            interaction.createFollowup({
-              content: "",
-              embeds: [
-                {
-                  title: "Error",
-                  description: "This message has multiple audio files, only the first one will be transcribed!",
-                  color: 0xff0000,
-                },
-              ],
-              flags: 1 << 6,
-            });
+          if (audioIndex > 0 && !bot.cfx.allowMultipleTranscriptions) {
+            sendEmbed(bot, interaction, bot.presets.embeds.transcribeMultipleAudioFiles);
             break;
           }
           audioIndex++;
@@ -97,109 +87,54 @@ async function transcribeAudioFile(bot: any, interaction: any) {
                         // truncate transcription
                         transcriptionText = transcriptionText.substring(0, 4096);
                         // send transcription to channel
-                        interaction.createFollowup({
-                          content: "",
-                          embeds: [
-                            {
-                              title: "Transcription (truncated)",
-                              description: transcriptionText,
-                              color: 0x4a8aff,
-                            },
-                            {
-                              title: "Full Transcription",
-                              description: `https://hastebin.com/share/${response.data.key}`,
-                              color: 0x0000ff,
-                            },
-                          ],
-                        })
+                        sendEmbeds(bot, interaction, [
+                          {
+                            title: "Transcription (truncated)",
+                            description: transcriptionText,
+                            color: 0x4a8aff,
+                          },
+                          {
+                            title: "Full Transcription",
+                            description: `https://hastebin.com/share/${response.data.key}`,
+                            color: 0x0000ff,
+                          },
+                        ]);
                       }
                     ).catch((err: any) => {
                       bot.logger.error(err);
-                      interaction.createFollowup({
-                        content: "",
-                        embeds: [
-                          {
-                            title: "Transcription (truncated)",
-                            description: transcriptionText.substring(0, 4096),
-                            color: 0x4a8aff,
-                          },
-                        ],
-                      });
+                      sendEmbed(bot, interaction, {
+                        title: "Transcription (truncated)",
+                        description: transcriptionText.substring(0, 4096),
+                        color: 0x4a8aff,
+                      })
                     });
                   } else {
-                    interaction.createFollowup({
-                      content: "",
-                      embeds: [
-                        {
-                          title: "Transcription",
-                          description: transcription.text,
-                          color: 0x4a8aff,
-                        },
-                      ],
-                    });
+                    sendEmbed(bot, interaction, {
+                      title: "Transcription",
+                      description: transcription.text,
+                      color: 0x4a8aff,
+                    })
                   }
                 }).catch((err: any) => {
-                  bot.logger.error(err);
-                interaction.createFollowup({
-                  content: "",
-                  embeds: [
-                    {
-                      title: "Error",
-                      description: "An error occurred while transcribing the audio file!",
-                      color: 0xff0000,
-                    },
-                  ],
-                  flags: 1 << 6,
-                });
+                bot.logger.error(err);
+                sendEmbed(bot, interaction, bot.presets.embeds.transcribeAudioError)
               });
             }).catch((err: any) => {
             bot.logger.error(err);
-            interaction.createFollowup({
-              content: "",
-              embeds: [
-                {
-                  title: "Error",
-                  description: "An error occurred while transcribing the audio file!",
-                  color: 0xff0000,
-                },
-              ],
-              flags: 1 << 6,
-            });
+            sendEmbed(bot, interaction, bot.presets.embeds.transcribeAudioError)
           });
         }
       } else {
         bot.logger.debug("Interaction has no audio files!");
-        return interaction.createMessage({
-          content: "",
-          embeds: [
-            {
-              title: "No Audio Files",
-              description: "This message has no audio files!",
-              color: 0xff0000,
-            },
-          ],
-          flags: 1 << 6,
-        })
+        return sendEmbedEphemeral(bot, interaction, bot.presets.embeds.transcribeNoAudioFiles)
       }
     } else {
       bot.logger.debug("Interaction has no files!");
-      return interaction.createMessage({
-        content: "",
-        embeds: [
-          {
-            title: "No Files",
-            description: "This message has no files!",
-            color: 0xff0000,
-          },
-        ],
-        flags: 1 << 6,
-      })
+      return sendEmbedEphemeral(bot, interaction, bot.presets.embeds.transcribeNoFiles)
     }
   } catch (err: any) {
     bot.logger.error(err);
   }
 }
 
-module.exports = {
-  transcribeAudioFile,
-}
+module.exports = transcribeAudioFile
