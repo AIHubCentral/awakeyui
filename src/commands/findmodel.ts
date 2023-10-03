@@ -84,7 +84,7 @@ module.exports = (bot: any, message: any, site: string, query: Array<string>) =>
               icon_url: model.creator?.image || "unknown",
             },
             image: {
-              url: model.nsfw ? undefined : model.image || "unknown",
+              url: model.nsfw ? undefined : model.image || undefined,
             },
             fields: [
               {

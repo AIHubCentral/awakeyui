@@ -71,7 +71,11 @@ async function getImage(bot: any, id: string) {
     const apiUrl = 'https://civitai.com/api/v1/models/' + id
     const response = await bot.axios.get(apiUrl);
 
-    return response?.data?.modelVersions[0]?.images[0]?.url;
+    if (response?.data?.modelVersions[0]?.images[0]?.nsfw != "X") {
+      return response?.data?.modelVersions[0]?.images[0]?.url;
+    } else {
+      return undefined;
+    }
   } catch (error) {
     //console.error('Error:', error);
     bot.logger.error({text: error});

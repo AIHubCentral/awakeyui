@@ -1,3 +1,5 @@
+const handleSlashCommand = require("../../handlers/slashCommands");
+
 module.exports = async (bot: any, interaction: any) => {
   try {
     bot.logger.debug({text: "interactionCreate"});
@@ -7,6 +9,7 @@ module.exports = async (bot: any, interaction: any) => {
       case 2:
         bot.logger.debug({text: "interaction type 2"});
         bot.logger.debug({text: interaction.data});
+        handleSlashCommand(bot, interaction);
         break;
       case 3:
         bot.logger.debug({text: "interaction type 3"});
