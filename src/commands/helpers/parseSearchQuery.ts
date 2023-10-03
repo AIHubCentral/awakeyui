@@ -83,7 +83,6 @@ function parseSearchQuery(query: Array<string>, site: string) {
   }
 
 
-
   // return object with:
   // {
   //   sort: "sort",
