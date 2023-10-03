@@ -92,7 +92,7 @@ module.exports = (bot: any, message: any) => {
               case "embed":
                 break;
               case "ppdf":
-                cmdEditPpdfWhitelist(bot, message, commandArgs)
+                //cmdEditPpdfWhitelist(bot, message, commandArgs)
                 break;
               default:
                 helperSendEmbed(bot, message, bot.presets.embeds.editSubcommand)

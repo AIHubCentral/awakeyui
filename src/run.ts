@@ -66,11 +66,6 @@ bot.on("messageCreate", async (message: any) => {
   await messageCreate(bot, message)
 });
 
-const threadCreate = require("./events/guild/threadCreate");
-bot.on("threadCreate", async (thread: any) => {
-  await threadCreate(bot, thread)
-});
-
 bot.on("error", (err: any) => {
   bot.logger.error({text: err});
 });

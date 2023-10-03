@@ -7,25 +7,7 @@ module.exports = async (bot: any, message: any) => {
     if (message.content.startsWith(`${process.env.PREFIX}`)) {
       bot.logger.debug({text: "isCommand"});
 
-      /*if (message.content == `${process.env.PREFIX}ping`) {
-          bot.logger.debug({text: "ping"});
-          bot.createMessage(message.channel.id, {
-              content: `:ping_pong:`,
-              messageReference: {messageID: message.id}
-          }).then((msg: any) => {
-              let apiPing = Date.now() - msg.timestamp;
-              let embed = {
-                  description: `**${message.author.username}#${message.author.discriminator}** :ping_pong: ${apiPing}ms`,
-                  color: 0x00ff00,
-              }
-              msg.edit({content: "", embed: embed});
-          });
-      } else if (message.content.startsWith(`${process.env.PREFIX}warp`)) {
-
-      }*/
-
       handleCommands(bot, message)
-
 
     }
   } catch (err) {

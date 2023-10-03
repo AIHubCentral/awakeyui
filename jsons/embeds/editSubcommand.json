@@ -1,5 +1,5 @@
 {
   "title": "Invalid Subcommand",
-  "description": "Please provide a valid subcommand;\nUsage: `~edit <subcommand> <args>`\n\nSubcommands are:\n- `msg` (disabled)\n- `embed` (disabled)\n- `ppdf`",
+  "description": "Please provide a valid subcommand;\nUsage: `~edit <subcommand> <args>`\n\nSubcommands are:\n- `msg` (disabled)\n- `embed` (disabled)\n- `ppdf` (disabled)",
   "color": 16711680
 }
