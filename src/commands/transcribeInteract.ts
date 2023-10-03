@@ -10,7 +10,7 @@ async function getAudioStream(bot: any, url: string) {
       throw new Error(`Failed to fetch audio, status code: ${response.status}`);
     }
 
-    const filePath = bot.path.join(__dirname, 'audio', 'file.mp3');
+    const filePath = bot.path.join(__dirname, '../..', 'audio', 'file.mp3');
     const fileStream = bot.fs.createWriteStream(filePath);
 
     response.data.pipe(fileStream);
