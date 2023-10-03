@@ -1,4 +1,3 @@
-const axios = require('axios');
 const parseSearchQuery = require('./parseSearchQuery');
 
 async function getModel(bot: any, query: Array<string>) {
@@ -45,7 +44,7 @@ async function getModel(bot: any, query: Array<string>) {
   try {
     const apiUrl = 'https://civitai.com/api/v1/models?' + queryBuild;
     //console.log(apiUrl);
-    const response = await axios.get(apiUrl);
+    const response = await bot.axios.get(apiUrl);
 
     // Check if the request was successful (status code 200)
     if (response.status === 200) {
@@ -70,7 +69,7 @@ async function getModel(bot: any, query: Array<string>) {
 async function getImage(bot: any, id: string) {
   try {
     const apiUrl = 'https://civitai.com/api/v1/models/' + id
-    const response = await axios.get(apiUrl);
+    const response = await bot.axios.get(apiUrl);
 
     return response?.data?.modelVersions[0]?.images[0]?.url;
   } catch (error) {

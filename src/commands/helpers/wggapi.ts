@@ -1,4 +1,3 @@
-const axios = require('axios');
 const parseSearchQuery = require('./parseSearchQuery');
 
 async function getModel(bot: any, query: Array<string>, overrideLimit?: number) {
@@ -48,7 +47,7 @@ async function getModel(bot: any, query: Array<string>, overrideLimit?: number) 
 
   try {
     const apiUrl = 'https://www.weights.gg/api/trpc/models.getAll?input=' + JSON.stringify(qjson);
-    const response = await axios.get(apiUrl);
+    const response = await bot.axios.get(apiUrl);
 
     // Check if the request was successful (status code 200)
     if (response.status === 200) {

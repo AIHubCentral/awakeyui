@@ -1,4 +1,3 @@
-const axios = require('axios');
 const parseSearchQuery = require('./parseSearchQuery');
 
 async function getModel(bot: any, query: Array<string>) {
@@ -54,7 +53,7 @@ async function getModel(bot: any, query: Array<string>) {
   // request json from https://huggingface.co/api/models? + queryBuild
   try {
     const apiUrl = 'https://huggingface.co/api/models?' + queryBuild;
-    const response = await axios.get(apiUrl);
+    const response = await bot.axios.get(apiUrl);
 
     // Check if the request was successful (status code 200)
     if (response.status === 200) {
