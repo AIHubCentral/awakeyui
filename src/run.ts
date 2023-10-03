@@ -1,5 +1,4 @@
 import puppeteer from "puppeteer";
-import OpenAI from "openai";
 
 const Eris = require("eris");
 
