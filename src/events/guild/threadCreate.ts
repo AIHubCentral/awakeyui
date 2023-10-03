@@ -125,11 +125,6 @@ module.exports = async (bot: any, thread: any) => {
                   label: "Deny",
                   custom_id: "request_deny_" + thread.id,
                 },
-              ],
-            },
-            {
-              type: 1,
-              components: [
                 {
                   type: 2,
                   style: 5,
@@ -143,7 +138,7 @@ module.exports = async (bot: any, thread: any) => {
                   url: "https://www.weights.gg/",
                 },
               ],
-            }
+            },
           ]
         })
       } catch (err) {
