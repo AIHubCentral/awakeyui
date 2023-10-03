@@ -19,7 +19,6 @@ bot.openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 bot.axios = require("axios").default;
-bot.bannedWords = require("./essentials/bannedWords").bannedwords;
 bot.path = require('path');
 bot.cfx = {
   allowMultipleTranscriptions: process.env.TRANSCRIPTION_ALLOW_MULTIPLE === "true",
