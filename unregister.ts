@@ -8,22 +8,20 @@ bot.on("error", (err: any) => {
   console.error(err);
 });
 
-bot.on("ready", () => {
+bot.on("ready", async () => {
   console.info(`Ready!`);
   // delete all registered commands
-  console.log(`Deleting all commands...`);
-  bot.getpplicationCommands().then((commands: any) => {
-    commands.forEach((command: any) => {
-      bot.deleteGuildApplicationCommand(process.env.GUILD_ID, command.id).then(() => {
-        console.log(`Deleted command ${command.name}`);
-      }).catch((err: any) => {
-        console.error(err);
-      });
-    });
-  }).catch((err: any) => {
-    console.error(err);
-  });
+  console.log(`Getting all commands...`);
+  await bot.getCommands().then(async (commands: any) => {
+    console.log(`Got all commands`);
+    for (const command of commands) {
+      console.log(`Deleting command ${command.name}`);
+      await bot.deleteCommand(command.id)
+      console.log(`Deleted command ${command.name}`);
+    }
+  })
   console.log(`Deleted all commands`);
+  process.exit(0);
 });
 
 console.info(`Connecting to Discord...`);
