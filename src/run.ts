@@ -15,9 +15,6 @@ const bot = new Eris(`Bot ${process.env.TOKEN}`, {
 
 bot.logger = require("./handlers/logger");
 bot.fs = require("fs");
-bot.openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
 bot.axios = require("axios").default;
 bot.path = require('path');
 bot.cfx = {
