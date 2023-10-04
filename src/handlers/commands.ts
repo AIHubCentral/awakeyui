@@ -21,7 +21,12 @@ module.exports = (bot: any, message: any) => {
 
       switch (commandName) {
         case "ping":
-          cmdPing(bot, message)
+          helperSendEmbed(bot, message, {
+            title: "Pong!",
+            description: `**Estimated Latency, use /ping for calculated latency**\nLatency is ${Date.now() - message.timestamp}ms. API Latency is ${Math.round(bot.ping)}ms`,
+          }).then(() => {
+            return;
+          })
           break;
         case "ppdf":
 
