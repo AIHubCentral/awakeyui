@@ -2,7 +2,7 @@ const pingCommand = require("../commands/ping");
 
 const findCommand = require("../commands/findmodel");
 
-module.exports = (bot: any, interaction: any) => {
+module.exports = async (bot: any, interaction: any) => {
   try {
     switch (interaction.data.name) {
       case "ping":

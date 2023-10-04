@@ -3,7 +3,7 @@ const noEmbed = require('./noInteractionEmbedEphemeral');
 module.exports = async (bot: any, interaction: any, embed: any) => {
   try {
     bot.logger.debug({text: embed});
-    await interaction.createMessage({
+    interaction.createMessage({
       content: "",
       embed: embed,
       flags: 1 << 6,

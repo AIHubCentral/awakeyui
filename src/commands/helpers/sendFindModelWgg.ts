@@ -5,7 +5,7 @@ module.exports = async (bot: any, interaction: any, res: any) => {
   try {
     bot.logger.debug({text: res});
     if (res == undefined || res.length == 0) {
-       await sendInteractionEmbedEphemeral(bot, interaction, bot.presets.embeds.findNoResultsFound)
+      sendInteractionEmbedEphemeral(bot, interaction, bot.presets.embeds.findNoResultsFound)
       return;
     } else if (res.length > 1) {
       // create embed
@@ -20,7 +20,7 @@ module.exports = async (bot: any, interaction: any, res: any) => {
           value: "- **Author:** " + model.discordUser + " <@" + model.discordUserId + ">" + "\n- **Description:**\n```\n" + model.content + "```\n- **Likes:** " + model._count.Likes + "\n- **Tags:**\n```json\n" + JSON.stringify(model.tags) + "```\n- **Epochs:** " + model.epochs + "\n- **Created at:** <t:" + (Math.floor(Date.parse(model.createdAt).valueOf() / 1000)) + ":R>\n- [**Weights.gg**](https://www.weights.gg/models/" + model.id + "): https://www.weights.gg/models/" + model.id + "\n- [**Huggingface.co**](" + model.url + "): " + model.url
         })
       })
-      await sendInteractionEmbed(bot, interaction, embed)
+      sendInteractionEmbed(bot, interaction, embed)
     } else {
       const model = res[0];
       // create embed
@@ -71,13 +71,16 @@ module.exports = async (bot: any, interaction: any, res: any) => {
             name: user.username,
             icon_url: user.avatarURL
           }
-          await sendInteractionEmbed(bot, interaction, embed);
+          sendInteractionEmbed(bot, interaction, embed);
         });
       } else {
-        await sendInteractionEmbed(bot, interaction, embed);
+        sendInteractionEmbed(bot, interaction, embed);
       }
     }
   } catch (err) {
-
+    bot.logger.error({text: `Error in hf:\n` + err});
+    // @ts-ignore
+    bot.logger.debug({text: err.stack});
+    return;
   }
 }

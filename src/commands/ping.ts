@@ -1,4 +1,4 @@
-module.exports = (bot: any, interaction: any) => {
+module.exports = async (bot: any, interaction: any) => {
   bot.logger.debug({text: "[pingCmd] ping"});
   const nowTime = Date.now();
   interaction.createMessage({

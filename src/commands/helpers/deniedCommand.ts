@@ -1,5 +1,5 @@
 module.exports = (bot: any, message: any) => {
   bot.logger.debug({text: "deniedCommand"});
-  message.addReaction("❌")
+  message.addReaction("❌");
   return;
 }

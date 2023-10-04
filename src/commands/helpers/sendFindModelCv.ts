@@ -5,7 +5,7 @@ module.exports = async (bot: any, interaction: any, res: any) => {
   try {
     bot.logger.debug({text: res});
     if (res == undefined || res.length == 0) {
-      await sendInteractionEmbedEphemeral(bot, interaction, bot.presets.embeds.findNoResultsFound)
+      sendInteractionEmbedEphemeral(bot, interaction, bot.presets.embeds.findNoResultsFound)
       return;
     } else if (res.length > 1) {
       // create embed
@@ -20,7 +20,7 @@ module.exports = async (bot: any, interaction: any, res: any) => {
           value: "- **Author:** " + model.creator.username + "\n- **Downloads:** " + model.stats.downloadCount + "\n- **Rating:** " + model.stats.rating + "\n- **Tags:**\n```json\n" + JSON.stringify(model.tags) + "```\n- **Type:** `" + model.type + "`\n- [**URL**](https://civitai.com/models/" + model.id + "): https://civitai.com/models/" + model.id
         })
       });
-      await sendInteractionEmbed(bot, interaction, embed)
+      sendInteractionEmbed(bot, interaction, embed)
     } else {
       const model = res[0];
       // create embed
@@ -62,9 +62,12 @@ module.exports = async (bot: any, interaction: any, res: any) => {
           },
         ]
       }
-      await sendInteractionEmbed(bot, interaction, embed)
+      sendInteractionEmbed(bot, interaction, embed)
     }
   } catch (err) {
-
+    bot.logger.error({text: `Error in hf:\n` + err});
+    // @ts-ignore
+    bot.logger.debug({text: err.stack});
+    return;
   }
 }

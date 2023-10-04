@@ -3,7 +3,7 @@ const noEmbed = require('./noInteractionEmbed');
 module.exports = async (bot: any, interaction: any, embed: any) => {
   try {
     bot.logger.debug({text: embed});
-    await interaction.createMessage({
+    interaction.createMessage({
       content: "",
       embed: embed,
     })
@@ -12,7 +12,7 @@ module.exports = async (bot: any, interaction: any, embed: any) => {
     bot.logger.error({text: `Could not send embed:\n` + err});
     // @ts-ignore
     bot.logger.debug({text: err.stack});
-    await noEmbed(bot, interaction);
+    noEmbed(bot, interaction);
     return;
   }
 }

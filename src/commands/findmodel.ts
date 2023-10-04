@@ -8,7 +8,7 @@ const sendFindModelCv = require('./helpers/sendFindModelCv');
 
 const sendInteractionEmbedEphemeral = require('./helpers/sendInteractionEmbedEphemeral');
 
-module.exports = (bot: any, interaction: any) => {
+module.exports = async (bot: any, interaction: any) => {
   try {
     let queryObject = {
       sort: undefined as string | undefined,
@@ -62,20 +62,20 @@ module.exports = (bot: any, interaction: any) => {
       switch (site) {
         case "wgg":
           bot.logger.debug({text: "wgg"});
-          wggapi.getModel(bot, queryObject).then(async (res: any) => {
-            await sendFindModelWgg(bot, interaction, res);
+          wggapi.getModel(bot, queryObject).then((res: any) => {
+            sendFindModelWgg(bot, interaction, res);
           });
           break;
         case "hf":
           bot.logger.debug({text: "hf"});
-          hfapi.getModel(bot, queryObject).then(async (res: any) => {
-            await sendFindModelHf(bot, interaction, res);
+          hfapi.getModel(bot, queryObject).then((res: any) => {
+            sendFindModelHf(bot, interaction, res);
           });
           break;
         case "cv":
           bot.logger.debug({text: "cv"});
-          cvapi.getModel(bot, queryObject).then(async (res: any) => {
-            await sendFindModelCv(bot, interaction, res);
+          cvapi.getModel(bot, queryObject).then((res: any) => {
+            sendFindModelCv(bot, interaction, res);
           });
           break;
         default:
