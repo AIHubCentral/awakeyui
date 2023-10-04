@@ -1,5 +1,5 @@
 {
   "title": "Invalid Site",
-  "description": "Please provide a valid site;\n\nOptions are:\n- `hf` (huggingface)\n- `cv` (civitai)\n- `wgg` (weights.gg)",
+  "description": "You need to specify a site to search on.\n\nHow did you even encounter this error??",
   "color": 16711680
 }

@@ -1,6 +1,7 @@
 import puppeteer from "puppeteer";
 
 const Eris = require("eris");
+const TurndownService = require('turndown');
 
 const bot = new Eris(`Bot ${process.env.TOKEN}`, {
   intents: [
@@ -16,6 +17,7 @@ bot.logger = require("./handlers/logger");
 bot.fs = require("fs");
 bot.axios = require("axios").default;
 bot.path = require('path');
+bot.turndownService = new TurndownService()
 bot.cfx = {
   allowMultipleTranscriptions: process.env.TRANSCRIPTION_ALLOW_MULTIPLE === "true",
   modRole: process.env.MOD_ROLE,

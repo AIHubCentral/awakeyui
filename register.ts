@@ -20,6 +20,26 @@ const commandsList = [
     description: "Find a model on Civitai, Weights.gg or Huggingface.",
     options: [
       {
+        name: "site",
+        description: "The site to search on.",
+        type: Constants.ApplicationCommandOptionTypes.STRING,
+        required: true,
+        choices: [
+          {
+            name: "Weights.gg",
+            value: "wgg",
+          },
+          {
+            name: "Huggingface.co",
+            value: "hf",
+          },
+          {
+            name: "Civitai.com",
+            value: "cv",
+          },
+        ],
+      },
+      {
         name: "query",
         description: "The name of the model to search for.",
         type: Constants.ApplicationCommandOptionTypes.STRING,

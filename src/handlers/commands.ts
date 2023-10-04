@@ -1,11 +1,9 @@
-const helperCheckPermissions = require("../commands/helpers/checkPerms")
 const helperCheckModRole = require("../commands/helpers/checkModRole")
 const helperDeniedCommand = require("../commands/helpers/deniedCommand")
 const helperSendEmbed = require("../commands/helpers/sendEmbed")
 
 const cmdPing = require("../commands/ping")
 const cmdPpdf = require("../commands/ppdf")
-const cmdFind = require("../commands/findmodel")
 const cmdEditPpdfWhitelist = require("../commands/editppdfwhitelist")
 
 
@@ -42,29 +40,6 @@ module.exports = (bot: any, message: any) => {
             return;
           }
           cmdPpdf(bot, message, url, pdf)
-          break;
-        case "find":
-
-          const validSites = ["hf", "cv", "wgg"]
-
-          const site = commandArgs[0]
-          const query = commandArgs.slice(1)
-          if (site == "help") {
-            helperSendEmbed(bot, message, bot.presets.embeds.findHelp)
-            return;
-          } else if (!site || query.length <= 0) {
-            helperSendEmbed(bot, message, bot.presets.embeds.findInvalidArgs)
-            return;
-          } else if (!validSites.includes(site)) {
-            helperSendEmbed(bot, message, bot.presets.embeds.findSiteInvalidSite)
-            return;
-          } else {
-            bot.logger.debug({text: site});
-            bot.logger.debug({text: query});
-          }
-
-          cmdFind(bot, message, site, query)
-
           break;
         case "help":
 

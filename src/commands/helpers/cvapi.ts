@@ -1,7 +1,4 @@
-const parseSearchQuery = require('./parseSearchQuery');
-
-async function getModel(bot: any, query: Array<string>) {
-  const psq = parseSearchQuery(query);
+async function getModel(bot: any, psq: any) {
   let pquery = psq.query;
   let sort = psq.sort;
   let author = psq.author;
@@ -11,7 +8,7 @@ async function getModel(bot: any, query: Array<string>) {
   let limit = psq.limit || 10;
 
   // check if query is empty
-  if (query.length <= 0 || !pquery) {
+  if (pquery.length <= 0 || !pquery) {
     return undefined;
   }
 
