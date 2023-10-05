@@ -7,10 +7,13 @@ module.exports = async (bot: any, interaction: any) => {
     switch (interaction.data.name) {
       case "ping":
         pingCommand(bot, interaction);
+        break;
       case "find":
         findCommand(bot, interaction);
+        break;
       case "ppdf":
         ppdfCommand(bot, interaction);
+        break;
     }
   } catch (err: any) {
 
