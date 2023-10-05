@@ -28,61 +28,6 @@ module.exports = (bot: any, message: any) => {
             return;
           })
           break;
-        case "ppdf":
-
-          // check if there's -p flag
-          let pdf: boolean = false
-          if (commandArgs[0] == "-p" || commandArgs[0] == "--pdf") {
-            pdf = true
-            commandArgs.shift()
-          }
-
-          const url = commandArgs[0]
-
-          // check if url is valid
-          if (!url || (!url.startsWith("http://") && !url.startsWith("https://")) || !url.includes(".") || url.includes(" ")) {
-            helperSendEmbed(bot, message, bot.presets.embeds.ppdfInvalidUrl)
-            return;
-          }
-          cmdPpdf(bot, message, url, pdf)
-          break;
-        case "help":
-
-          if (commandArgs.length <= 0) {
-            helperSendEmbed(bot, message, bot.presets.embeds.helpHelp)
-            return;
-          }
-          switch (commandArgs[0]) {
-            case "find":
-              helperSendEmbed(bot, message, bot.presets.embeds.findHelp)
-              break;
-            case "ping":
-              helperSendEmbed(bot, message, bot.presets.embeds.pingHelp)
-              break;
-            case "ppdf":
-              helperSendEmbed(bot, message, bot.presets.embeds.ppdfHelp)
-              break;
-          }
-          break;
-        case "edit":
-          if (helperCheckModRole(bot, message)) {
-            switch (commandArgs[0]) {
-              case "msg":
-                break;
-              case "embed":
-                break;
-              case "ppdf":
-                //cmdEditPpdfWhitelist(bot, message, commandArgs)
-                break;
-              default:
-                helperSendEmbed(bot, message, bot.presets.embeds.editSubcommand)
-                break;
-            }
-          } else {
-            helperDeniedCommand(bot, message)
-            return;
-          }
-          break;
         case "about":
           helperSendEmbed(bot, message, bot.presets.embeds.about)
           break;

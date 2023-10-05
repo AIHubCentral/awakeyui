@@ -1,12 +1,12 @@
-const fs = require('fs');
-
 const helperCheckModRole = require("./helpers/checkModRole");
 const sendEmbed = require("./helpers/sendEmbed");
+const sendInteractionEmbedEphemeral = require("./helpers/sendInteractionEmbedEphemeral");
+const sendInteractionEmbed = require("./helpers/sendInteractionEmbed");
 
-function checkForWhitelist(url: string) {
+function checkForWhitelist(bot: any, url: string) {
 
   // load jsons/data/ppdfWhitelist.json
-  const whitelist = JSON.parse(fs.readFileSync('jsons/data/ppdfWhitelist.json', 'utf8'));
+  const whitelist = JSON.parse(bot.fs.readFileSync('jsons/data/ppdfWhitelist.json', 'utf8'));
 
   // check if url is in whitelist, whitelist entries that end with * mean that every url that starts with the entry is whitelisted
   for (const entry of whitelist) {
@@ -20,15 +20,29 @@ function checkForWhitelist(url: string) {
   }
 }
 
-module.exports = (bot: any, message: any, url: string, pdf: boolean) => {
+module.exports = (bot: any, interaction: any) => {
+  let url: string = "";
+  let pdf: boolean = false;
+  for (const option of interaction.data.options) {
+    if (option.name == "url") {
+      url = option.value;
+    } else if (option.name == "pdf") {
+      pdf = option.value;
+    }
+  }
+
   bot.logger.debug({text: "[ppdfCmd] ppdf"});
   try {
-    if (!checkForWhitelist(url) && !helperCheckModRole(bot, message)) {
-      message.addReaction("❌");
+    if (!checkForWhitelist(bot, url) && !helperCheckModRole(bot, interaction)) {
+      sendInteractionEmbedEphemeral(bot, interaction, {
+        color: 0xff0000,
+        title: "Error",
+        description: "This url is not whitelisted for ppdf. If you think this is a mistake, please contact a @sleepyyui."
+      });
       return;
     } else {
       // add react to message
-      message.addReaction("🖨️");
+      interaction.acknowledge();
       (async () => {
         let pdfBuffer: Buffer;
         let pngBuffer: Buffer;
@@ -66,16 +80,15 @@ module.exports = (bot: any, message: any, url: string, pdf: boolean) => {
           }
 
           // create buffer from pageScreenshot.png
-          pngBuffer = fs.readFileSync('ppdf/pageScreenshot.png');
+          pngBuffer = bot.fs.readFileSync('ppdf/pageScreenshot.png');
           if (pdf) {
             // create buffer from pagePDF.pdf
-            pdfBuffer = fs.readFileSync('ppdf/pagePDF.pdf');
+            pdfBuffer = bot.fs.readFileSync('ppdf/pagePDF.pdf');
 
             try {
               // send pageScreenshot.png to channel
-              bot.createMessage(message.channel.id, {
+              interaction.createMessage({
                   content: "",
-                  messageReference: {messageID: message.id},
                 },
                 // send image and pdf as files
                 [
@@ -94,13 +107,12 @@ module.exports = (bot: any, message: any, url: string, pdf: boolean) => {
               // @ts-ignore
               bot.logger.debug({text: err.stack});
 
-              sendEmbed(bot, message, bot.presets.embeds.ppdfError)
+              sendInteractionEmbed(bot, interaction, bot.presets.embeds.ppdfError)
             }
           } else {
             // send pageScreenshot.png to channel
-            bot.createMessage(message.channel.id, {
+            interaction.createMessage({
                 content: "",
-                messageReference: {messageID: message.id},
               },
               // send image as file
               [
@@ -117,7 +129,7 @@ module.exports = (bot: any, message: any, url: string, pdf: boolean) => {
           // @ts-ignore
           bot.logger.debug({text: err.stack});
 
-          sendEmbed(bot, message, bot.presets.embeds.ppdfError)
+          sendInteractionEmbed(bot, interaction, bot.presets.embeds.ppdfError)
         }
 
       })();
@@ -127,6 +139,6 @@ module.exports = (bot: any, message: any, url: string, pdf: boolean) => {
     // @ts-ignore
     bot.logger.debug({text: err.stack});
 
-    sendEmbed(bot, message, bot.presets.embeds.ppdfError);
+    sendInteractionEmbedEphemeral(bot, interaction, bot.presets.embeds.ppdfError)
   }
 }
