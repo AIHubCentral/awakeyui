@@ -7,8 +7,9 @@ const bot = new Eris(`Bot ${process.env.TOKEN}`, {});
 
 const commandsList = [
   {
-    name: "Transcribe",
-    type: Constants.ApplicationCommandTypes.MESSAGE,
+    name: "about",
+    description: "About the bot.",
+    type: Constants.ApplicationCommandTypes.CHAT_INPUT,
   },
   {
     name: "ping",
