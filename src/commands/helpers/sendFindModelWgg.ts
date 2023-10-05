@@ -23,10 +23,14 @@ module.exports = async (bot: any, interaction: any, res: any) => {
       sendInteractionEmbed(bot, interaction, embed)
     } else {
       const model = res[0];
+      let content = model.content;
+      if (content.length > 4096) {
+        content = model.content.slice(0, 4093) + "...";
+      }
       // create embed
       let embed = {
         title: model.title || "unknown",
-        description: model.content || "unknown",
+        description: content || "unknown",
         color: 0x00ff00,
         author: {
           name: model.discordUser,

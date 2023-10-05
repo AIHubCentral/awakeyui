@@ -23,11 +23,16 @@ module.exports = async (bot: any, interaction: any, res: any) => {
       sendInteractionEmbed(bot, interaction, embed)
     } else {
       const model = res[0];
+      let content = bot.turndownService.turndown(model.description || "unknown");
+      if (content.length > 4096) {
+        // cut the string to 4093 characters
+        content = content.slice(0, 4093) + "...";
+      }
       // create embed
       let embed = {
         title: model.name || "unknown",
         color: 0x00ff00,
-        description: bot.turndownService.turndown(model.description || "unknown"),
+        description: content || "unknown",
         author: {
           name: model.creator?.username || "unknown",
           icon_url: model.creator?.image || "unknown",
