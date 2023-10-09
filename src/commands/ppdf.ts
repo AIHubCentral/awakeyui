@@ -37,7 +37,7 @@ module.exports = async (bot: any, interaction: any) => {
       sendInteractionEmbedEphemeral(bot, interaction, {
         color: 0xff0000,
         title: "Error",
-        description: "This url is not whitelisted for ppdf. If you think this is a mistake, please contact a @sleepyyui."
+        description: "This url is not whitelisted for ppdf. If you think this is a mistake, please contact @sleepyyui."
       });
       return;
     } else {
